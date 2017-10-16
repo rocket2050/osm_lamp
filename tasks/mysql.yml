@@ -24,6 +24,6 @@
 - name: To create db user
   mysql_user:
     name: wordpress
-    password: password
+    password: "{{ db_password }}"
     priv: 'wordpress.*:ALL'
     state: present
