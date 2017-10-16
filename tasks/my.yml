@@ -7,6 +7,7 @@
 
 - name: To upgrade mysql
   command: mysql_upgrade
+  ignore_errors: yes
   tags:
     - db_upgrade
 
