@@ -7,6 +7,8 @@
 
 - name: To upgrade mysql
   command: mysql_upgrade
+  tags:
+    - db_upgrade
 
 - name: To create db user
   mysql_user:
