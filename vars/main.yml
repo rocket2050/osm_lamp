@@ -1,2 +1,3 @@
 ---
 # vars file for lamp
+db_password: password
