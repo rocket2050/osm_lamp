@@ -1,0 +1,86 @@
+---
+
+- name: To install apache
+  yum: name=httpd state=present
+
+- name: To start apache
+  service: name=httpd state=started enabled=true
+
+- name: To install wget
+  yum: name=wget state=present
+
+- name: To install epel Repo
+  yum: name=epel-release state=present
+
+
+
+- name: To get MySql Repo
+  get_url:
+    url: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+    dest: /root
+
+- name: To install repo
+  yum:
+    name: /root/mysql-community-release-el7-5.noarch.rpm
+    state: present
+
+#- name: To add my.cnf
+#  template: src=my.cnf.j2 dest=/root/.my.cnf mode=0644
+#  tags: my
+
+- name: To install mysql server
+  yum: name={{ item }} state=present
+  with_items:
+    - mysql-community-server
+    - mysql-community-client
+    - MySQL-python
+
+- name: To start mariadb
+  service: name=mysqld state=started enabled=true
+
+- name: To configure MySql
+  include: mysql_secure_installation2.yml
+  notify:
+    - restart_mariadb
+
+- name: To create a wordpress user
+  include: my.yml
+  notify:
+    - restart_mariadb
+
+- name: To install PHP modules
+  yum: name={{ item }} state=present
+  with_items:
+    - php-bcmath
+    - php-cli
+    - php-common
+    - php-dba
+    - php-devel
+    - php-embedded
+    - php-enchant
+    - php-fpm
+    - php-gd
+    - php-mysql
+    - php
+
+- name: To install epel repo
+  yum: name=epel-release state=present
+
+- name: To install phpMyAdmin
+  yum: name=phpmyadmin state=present
+
+- name: To copy file of info
+  copy: src=info.php dest=/var/www/html/info.php
+  notify:
+    - restart_apache
+
+- name: To copy phpMyAdmin
+  template: src=phpMyAdmin.conf.j2 dest=/etc/httpd/conf.d/phpMyAdmin.conf
+  notify:
+    - restart_apache
+
+- name: To restart apache and db again
+  service: name={{ item }} state=restarted
+  with_items:
+    - httpd
+    - mysqld

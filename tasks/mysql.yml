@@ -1,0 +1,29 @@
+---
+
+- name: Installing Mysql in Ubuntu
+  apt:
+    name: "{{ item }}" 
+    state: present
+    update_cache: yes
+  with_items:
+    - mysql-client
+    - python-mysqldb
+    - php-mysql
+    - mysql-server
+  notify:
+    - mysql_start
+
+- name: Mysql_Secure_Installation
+  include: mysql_secure_installation.yml
+
+- name: create database for wordpress
+  mysql_db:
+    name: wordpress
+    state: present
+
+- name: To create db user
+  mysql_user:
+    name: wordpress
+    password: password
+    priv: 'wordpress.*:ALL'
+    state: present

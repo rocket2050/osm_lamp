@@ -1,0 +1,18 @@
+---
+
+- name: create database for wordpress
+  mysql_db:
+    name: wordpress
+    state: present
+
+- name: To upgrade mysql
+  command: mysql_upgrade
+
+- name: To create db user
+  mysql_user:
+    name: wordpress
+    password: password
+    priv: 'wordpress.*:ALL'
+    state: present
+
+

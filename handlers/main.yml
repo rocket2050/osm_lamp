@@ -1,0 +1,16 @@
+---
+# handlers file for lamp
+
+- name: apache_restart
+  service: name=apache2 state=restarted
+
+- name: mysql_start
+  service: name=mysql state=started
+
+- name: restart_mariadb
+  service: name=mysqld state=restarted
+  
+- name: restart_apache
+  service: name=httpd state=restarted
+
+
