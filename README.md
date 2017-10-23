@@ -10,7 +10,7 @@ There is only requirment of a ubuntu and RedHat or CentOS Machine.
 Role Variables
 --------------
 
-The Variables are in vars directory
+The Variables are in vars(https://github.com/opstree-ansible/osm_lamp/blob/master/vars/main.yml)
 
 Note
 ------------
